@@ -1,0 +1,138 @@
+bsub -P analysis-cgp -sp 100 -q singularity -n 8 -R'select[mem>80000] rusage[mem=80000]' -M80000 -J drj_sing_pindel -oo drj_pindel_singularity.log \
+ 'singularity exec \
+ --workdir /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/workdir/ \
+ --home /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/workdir:/home \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/test/ref/human/GRCh37d5/:/var/spool/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/live/ref/human/GRCh37d5/:/var/spool/live/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/drj_cave_test/:/var/spool/data:ro \
+ ./1.0.0-2019-02-08-488c2ccbd0ca.simg \
+ pindel.pl \
+ -o /home \
+ -r /var/spool/ref/genome.fa \
+ -t /var/spool/data/mt.bam \
+ -n /var/spool/data/wt.bam \
+ -s /var/spool/ref/pindel/simpleRepeats.bed.gz \
+ -f /var/spool/ref/pindel/WGS_Rules.lst \
+ -g /var/spool/ref/vagrent/e75/codingexon_regions.indel.bed.gz \
+ -u /var/spool/live/ref/pindel/pindel_np.v4.gff3.gz \
+ -st WGS \
+ -as GRCh37d5 \
+ -sp Human \
+ -e MT,GL%,hs37d5,NC_007605 \
+ -b /var/spool/ref/shared/ucscHiDepth_0.01_mrg1000_no_exon_coreChrs.bed.gz \
+ -c 8 \
+ -sf /var/spool/ref/pindel/softRulesFragment.lst'
+
+
+
+
+
+
+
+bsub -P analysis-cgp -sp 100 -q singularity -n 4 -R'select[mem>36000] rusage[mem=36000]' -M36000 -J drj_sing_fup_pindel -oo drj_fup_pindel_singularity.log \
+ 'singularity exec \
+ --workdir /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir/ \
+ --home /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir:/home \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/test/ref/human/GRCh37d5/:/var/spool/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/live/ref/human/GRCh37d5/:/var/spool/live/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/:/var/spool/data:ro \
+ /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/1.0.0-2019-02-08-488c2ccbd0ca.simg \
+ pindel.pl \
+ -o /home \
+ -r /var/spool/ref/genome.fa \
+ -t /var/spool/data/mt.bam \
+ -n /var/spool/data/wt.bam \
+ -s /var/spool/ref/pindel/simpleRepeats.bed.gz \
+ -f /var/spool/ref/pindel/WGS_Rules.lst \
+ -g /var/spool/ref/vagrent/e75/codingexon_regions.indel.bed.gz \
+ -u /var/spool/live/ref/pindel/pindel_np.v4.gff3.gz \
+ -st AMPLICON \
+ -as GRCh37d5 \
+ -sp Human \
+ -e MT,GL%,hs37d5,NC_007605 \
+ -b /var/spool/ref/shared/ucscHiDepth_0.01_mrg1000_no_exon_coreChrs.bed.gz \
+ -c 4 \
+ -sf /var/spool/ref/pindel/softRulesFragment.lst'
+
+
+/software/CGP/canpipe/test/bin/canpipe_test pindel.pl -o tmpPindel -r $SCRATCH119/canpipe/test/ref/human/GRCh37d5/genome.fa \
+-t ../mt.bam -n ../wt.bam -s $SCRATCH119/canpipe/test/ref/human/GRCh37d5/pindel/simpleRepeats.bed.gz \
+-f $SCRATCH119/canpipe/test/ref/human/GRCh37d5/pindel/WGS_Rules.lst \
+ -g $SCRATCH119/canpipe/test/ref/human/GRCh37d5/vagrent/e75/codingexon_regions.indel.bed.gz \
+ -u $SCRATCH119/canpipe/test/ref/human/GRCh37d5/pindel/pindel_np.v4.gff3.gz \
+ -st AMPLICON \
+ -as GRCh37d5 \
+ -sp Human \
+ -e MT,GL%,hs37d5,NC_007605 \
+ -b $SCRATCH119/canpipe/test/ref/human/GRCh37d5/shared/ucscHiDepth_0.01_mrg1000_no_exon_coreChrs.bed.gz \
+ -c 4 \
+ -sf $SCRATCH119/canpipe/test/ref/human/GRCh37d5/pindel/softRulesFragment.lst
+
+
+
+
+singularity exec \
+ --workdir /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir/ \
+ --home /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/workdir:/home \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/:/var/spool/ref:ro \
+ /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/1.0.0-2019-02-08-488c2ccbd0ca.simg \
+ ls -La /var/spool/ref/test/ref/human/GRCh37d5/pindel
+
+
+
+singularity exec \
+ --workdir /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir/ \
+ --home /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir:/home \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/test/ref/human/GRCh37d5/:/var/spool/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/live/ref/human/GRCh37d5/:/var/spool/live/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/:/var/spool/data:ro \
+ /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/1.0.0-2019-02-08-488c2ccbd0ca.simg \
+ /usr/bin/perl /opt/wtsi-cgp/bin/pindel_merge_vcf_bam.pl -o /home/PD26840a_vs_PD26840b -i /home/tmpPindel/vcf -r /var/spool/ref/genome.fa
+
+
+
+singularity exec \
+ --workdir /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir/ \
+ --home /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir:/home \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/test/ref/human/GRCh37d5/:/var/spool/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/live/ref/human/GRCh37d5/:/var/spool/live/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/:/var/spool/data:ro \
+ /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/1.0.0-2019-02-08-488c2ccbd0ca.simg \
+ls -la; pwd; (zcat 21_pindel_mt.sam.gz ; zgrep -v '^@' 7_pindel_mt.sam.gz 13_pindel_mt.sam.gz \
+18_pindel_mt.sam.gz 11_pindel_mt.sam.gz 1_pindel_mt.sam.gz 22_pindel_mt.sam.gz 12_pindel_mt.sam.gz \
+10_pindel_mt.sam.gz 2_pindel_mt.sam.gz X_pindel_mt.sam.gz 19_pindel_mt.sam.gz 5_pindel_mt.sam.gz \
+8_pindel_mt.sam.gz 14_pindel_mt.sam.gz 6_pindel_mt.sam.gz 15_pindel_mt.sam.gz Y_pindel_mt.sam.gz \
+17_pindel_mt.sam.gz 9_pindel_mt.sam.gz 3_pindel_mt.sam.gz 4_pindel_mt.sam.gz 16_pindel_mt.sam.gz \
+20_pindel_mt.sam.gz) | /opt/wtsi-cgp/biobambam2/bin/bamsort inputformat=sam outputformat=bam reference=/var/spool/ref/genome.fa | tee ../../PD26840a_vs_PD26840b_mt.bam | md5sum -b - > ../../PD26840a_vs_PD26840b_mt.bam.md5
+
+
+singularity shell \
+ --workdir /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir/ \
+ --home /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/workdir:/home \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/test/ref/human/GRCh37d5/:/var/spool/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/canpipe/live/ref/human/GRCh37d5/:/var/spool/live/ref:ro \
+ --bind /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/followup/:/var/spool/data:ro \
+ /lustre/scratch119/casm/team78pipelines/drj_cave_test/pindel/1.0.0-2019-02-08-488c2ccbd0ca.simg
+
+
+
+
+docker run \
+--mount type=bind,source="$(pwd)",target=/var/spool \
+1.0.0 \
+pindel.pl \
+ -o /var/spool/workdir \
+ -r /var/spool/refarea/genome.fa \
+ -t /var/spool/mt.bam \
+ -n /var/spool/wt.bam \
+ -s /var/spool/refarea/simpleRepeats.bed.gz \
+ -f /var/spool/refarea/WGS_Rules.lst \
+ -g /var/spool/refarea/codingexon_regions.indel.bed.gz \
+ -u /var/spool/refarea/pindel_np.v4.gff3.gz \
+ -st AMPLICON \
+ -as GRCh37d5 \
+ -sp Human \
+ -e MT,GL%,hs37d5,NC_007605 \
+ -b /var/spool/refarea/ucscHiDepth_0.01_mrg1000_no_exon_coreChrs.bed.gz \
+ -c 1 \
+ -sf /var/spool/refarea/softRulesFragment.lst
