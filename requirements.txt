@@ -1,0 +1,25 @@
+astroid==2.0.4
+atomicwrites==1.3.0
+attrs==18.2.0
+Click==7.0
+Flask==1.0.2
+Flask-Cors==3.0.7
+isort==4.3.4
+itsdangerous==1.1.0
+Jinja2==2.10
+jsonschema==2.6.0
+lazy-object-proxy==1.3.1
+MarkupSafe==1.1.0
+mccabe==0.6.1
+more-itertools==6.0.0
+pluggy==0.8.1
+py==1.7.0
+PyCmdMessenger==0.2.4
+pylint==2.1.1
+pyserial==3.4
+pytest==4.2.1
+-e git+https://github.com/drjdev/cricket_sb_rest.git@0d6fb7b5a06d27487e629e4bcefbe65a5a5ff1da#egg=scoreboardrest
+six==1.11.0
+typed-ast==1.1.0
+Werkzeug==0.14.1
+wrapt==1.10.11
