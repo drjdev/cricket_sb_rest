@@ -53,6 +53,17 @@ def get_arduino_serial_port():
   
     return None
 
+@app.errorhandler(InvalidUsage)
+@app.errorhandler(ArduinoError)
+@app.errorhandler(ValidationError)
+def handle_invalid_usage(error):
+    """
+    Handles exceptions and raises via the API as a response
+    """
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 @app.route("/ping")
 def ping():
     """
@@ -72,7 +83,7 @@ def init():
     ard_device = get_arduino_serial_port()
     if ard_device is None:
         raise InvalidUsage( 
-                  message="Arduino not found in serial devices")
+          message="Arduino not found in serial deviceswhen connecting")
 
     #Attempt connection to the arduino
     try:
@@ -87,7 +98,7 @@ def init():
     except (ValueError, SerialException) as err:
         raise InvalidUsage(
                   message=err,
-                  status_code=400,
+                  status_code=503,
                   payload={
                         'settings': {
                             'address': ard_device,
@@ -169,6 +180,18 @@ def update_score():
     wickets = str2_arr[0]
     overs = str2_arr[1]
     target = str2_arr[2]
+
+    # Messenger not setup or lost connection. Try and connect.
+    if messenger is None:
+        init()
+
+    if messenger is None:
+        raise ArduinoError(
+          message="Error updating score with Arduino, not connected",
+          status_code=400)
+
+    
+    print("****************{}***********".format(messenger))
 
     messenger.send("kUpdateScoreboard",
                     batAScore, totalScore,
